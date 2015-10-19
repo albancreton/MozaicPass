@@ -7,7 +7,7 @@ function createCubeDemo(element, have_gui) {
   (function(){
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    camera = new THREE.PerspectiveCamera( 75, element.offsetWidth/element.offsetHeight, 0.1, 1000 );
     camera.position.z = 5;
 
     renderer = new THREE.WebGLRenderer();
@@ -15,7 +15,8 @@ function createCubeDemo(element, have_gui) {
     renderer.setClearColor( 0xeeeeee, 1 );
     element.appendChild( renderer.domElement );
 
-    var geometry = new THREE.BoxGeometry( 2, 2, 2 );
+    //var geometry = new THREE.BoxGeometry( 2, 2, 2 );
+    var geometry = new THREE.IcosahedronGeometry(2,1);
     var material = new THREE.MeshPhongMaterial( { color: 0x666666, specular: 0xdddddd, shininess: 30, shading: THREE.FlatShading } )
     cube = new THREE.Mesh( geometry, material );
 
@@ -93,7 +94,7 @@ function createCubeDemo(element, have_gui) {
 
   // randomly rotate the cube
   function move_cube() {
-    var s = randr(.5,2), tween1, tween2;
+    var s = randr(.5,2), tween1, tween2, tween3;
 
     tween1 = new TWEEN.Tween(cube.rotation)
     .easing(EASE_FUNCTION)
@@ -114,6 +115,14 @@ function createCubeDemo(element, have_gui) {
       z: s
     }, EASE_TIME )
     tween2.start()
+
+
+    tween3 = new TWEEN.Tween(cube.position)
+    .easing(EASE_FUNCTION)
+    tween3.to( {
+      x: randz(2)
+    }, EASE_TIME )
+    tween3.start()
   }
 
   // randomly pixalate the scene

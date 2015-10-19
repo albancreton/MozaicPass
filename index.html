@@ -37,27 +37,18 @@
       <h3>
 <a id="mozaic-pass-and-shader-for-threejs" class="anchor" href="#mozaic-pass-and-shader-for-threejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mozaic Pass and Shader for Three.js.</h3>
 
-<p>Lorem upsum</p>
+<p>Simple Fragment and Effect Composer Pass for three.js to pixelate the screen.</p>
 
-      <div id="demo"></div>
+      <h4>How to ?</h4>
+      <p>Include the Shader and the Pass</p>
 
       <pre><code>
-var scene = new THREE.Scene();
+&lt;script type="text/javascript" src="lib/MozaicShader.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="lib/MozaicPass.js"&gt;&lt;/script&gt;
+      </code></pre>
 
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.z = 5;
-
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setClearColor( 0xeeeeee, 1 );
-document.body.appendChild( renderer.domElement );
-
-var geometry = new THREE.BoxGeometry( 2, 2, 2 );
-var material = new THREE.MeshBasicMaterial( { color: 0x666666 } );;
-
-scene.add( cube );
-
-
+      <p>Add Mozaic Pass to your effect composer stack</p>
+      <pre><code>
 var composer = new THREE.EffectComposer( renderer );
 
 var mozaic = new THREE.MozaicPass();
@@ -65,16 +56,115 @@ mozaic.cellsize = 20;
 mozaic.renderToScreen = true;
 
 composer.addPass( mozaic );
-
-function render() {
-  requestAnimationFrame( render );
-
-  cube.rotation.y += .01;
-
-  renderer.render(scene, camera);
-  composer.render(time);
-}
       </code></pre>
+
+      <h4>Demo</h4>
+      <div id="demo"></div>
+
+      <pre><code id="demo-code">
+(function(){
+      var el = document.getElementById('demo');
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 75, el.offsetWidth/el.offsetHeight, 0.1, 1000 );
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize( el.offsetWidth, el.offsetHeight );
+      el.appendChild( renderer.domElement );
+
+      var geometry = new THREE.BoxGeometry( 2, 2, 2 );
+      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      var cube = new THREE.Mesh( geometry, material );
+      scene.add( cube );
+
+      camera.position.z = 5;
+
+      var composer = new THREE.EffectComposer( renderer );
+      composer.addPass( new THREE.RenderPass( scene, camera ) );
+
+      var mozaic = new THREE.MozaicPass();
+      mozaic.cellsize = 10;
+      mozaic.renderToScreen = true;
+
+      composer.addPass( mozaic );
+
+      var gui = new dat.GUI({
+          height : 2 * 32 - 1,
+          autoplace: false
+      });
+      var f1 = gui.addFolder('Mozaic effect');
+      f1.add(mozaic, 'cellsize').min(1).max(50).step(1).listen();
+      f1.open();
+
+      el.appendChild(gui.domElement);
+
+      var render = function (time) {
+        requestAnimationFrame( render );
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
+        renderer.render(scene, camera);
+        composer.render(time);
+      };
+
+      render();
+})()
+      </code></pre>
+
+<script type="text/javascript" id="demoscript">
+(function(){
+      var el = document.getElementById('demo');
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 75, el.offsetWidth/el.offsetHeight, 0.1, 1000 );
+
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize( el.offsetWidth, el.offsetHeight );
+      el.appendChild( renderer.domElement );
+
+      var geometry = new THREE.BoxGeometry( 2, 2, 2 );
+      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+      var cube = new THREE.Mesh( geometry, material );
+      scene.add( cube );
+
+      camera.position.z = 5;
+
+      var composer = new THREE.EffectComposer( renderer );
+      composer.addPass( new THREE.RenderPass( scene, camera ) );
+
+      var mozaic = new THREE.MozaicPass();
+      mozaic.cellsize = 10;
+      mozaic.renderToScreen = true;
+
+      composer.addPass( mozaic );
+
+      var gui = new dat.GUI({
+          height : 2 * 32 - 1,
+          autoplace: false
+      });
+      var f1 = gui.addFolder('Mozaic effect');
+      f1.add(mozaic, 'cellsize').min(1).max(50).step(1).listen();
+      f1.open();
+
+      el.appendChild(gui.domElement);
+
+      var render = function (time) {
+        requestAnimationFrame( render );
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+
+        renderer.render(scene, camera);
+        composer.render(time);
+      };
+
+      render();
+})()
+</script>
+<script type="text/javascript" id="demoscript">
+document.getElementById('demo-code').innerHTML = document.getElementById('demoscript').innerHTML;
+</script>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/albancreton/MozaicPass">MozaicPass for Threejs</a> is maintained by <a href="http://alban.me">alban creton</a>.</span>
@@ -88,7 +178,7 @@ function render() {
         EASE_TIME = 800;
 
         createCubeDemo(document.getElementById('page-header'), false);
-        createCubeDemo(document.getElementById('demo'), true);
+        //createCubeDemo(document.getElementById('demo'), true);
     </script>
 
   </body>
