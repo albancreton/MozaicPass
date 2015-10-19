@@ -1,0 +1,33 @@
+{
+  "name": "MozaicPass",
+  "version": "1.0.0",
+  "homepage": "https://github.com/albancreton/MozaicPass",
+  "authors": [
+    "Alban Creton <acreton@gmail.com>"
+  ],
+  "description": "Mozaic (pixalate) Shader and Pass for Three.js",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "threejs",
+    "pixelate",
+    "mozaic",
+    "shader",
+    "pass",
+    "render",
+    "effect"
+  ],
+  "license": "Apache Licence 2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "threejs": "r72",
+    "tween.js": "tweenjs#~16.3.1",
+    "zepto": "~1.1.6"
+  }
+}
